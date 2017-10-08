@@ -1,0 +1,28 @@
+---
+title: "GTDBProject Sandbox"
+author: "Wendi Sapp"
+date: "October 7, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## SandBox for EDA
+
+
+Setting working directory and loading data into a dataframe.
+```{r}
+setwd("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/GTDBproject")
+
+GTdf <- read.csv("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/globalterrorismdb_0617dist.csv")
+
+```
+
+Attempting EDA... where to begin... standard `summary()` and `plot()` will not work with 135 variables.
+```{r}
+
+
+```
+
