@@ -5,6 +5,9 @@ date: "September 30, 2017"
 output:
   pdf_document: default
   html_document: default
+bibliography: GTDBProject.bib
+toc: true
+csl: nature.csl
 ---
 
 ```{r setup, include=FALSE}
@@ -16,9 +19,7 @@ Continuous media coverage of terroristic attacks makes one consider his or her o
 
 ## I. Introduction
 
-Here is the best introduction ever!
-
-Several, well-written paragraphs and abundant citations.
+The complexity of global terroristic threats makes the subject an intriguing problem to study. There are many, well-documented correlations between terrorism and education [-@lafree_introducing_2007], poverty levels, regional economics,
 
 
 ## II. About the Data
