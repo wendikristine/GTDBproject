@@ -44,3 +44,26 @@ geom_point(size=2, alpha = 1/2, aes(longitude,latitude, color=weaptype1_txt), da
   
 ```
 
+```{r}
+barplot(GTdf$country)
+
+
+```
+
+
+
+
+# Ideas
+
+5-7 most dangerous and 5-7 least dangerous countries (total terrorism, try to include USA) - freq chart by country
+    * plot how weapon types have changed since 2000, by country
+    * Relationship between weapon choice and type of attack
+    * Crit1,2,3 - compared to weapon type
+
+Terrorism by Continent?
+    * Heat map of total terrorism
+    * Color coded by most popular weapon or crit1,2,3
+
+
+
+
