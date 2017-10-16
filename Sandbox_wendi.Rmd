@@ -16,7 +16,7 @@ Setting working directory and loading data into a dataframe.
 ```{r}
 setwd("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/GTDBproject")
 
-#GTdf <- read.csv("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/globalterrorismdb_0617dist.csv")
+GTdf <- read.csv("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/globalterrorismdb_0617dist.csv")
 
 US_GTdf <- read.csv("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/GTDB_US_cont.csv")
 ```
@@ -45,7 +45,9 @@ geom_point(size=2, alpha = 1/2, aes(longitude,latitude, color=weaptype1_txt), da
 ```
 
 ```{r}
-barplot(GTdf$country)
+
+table(GTdf$country)
+#barplot(table_GTdf)
 
 
 ```
@@ -55,14 +57,14 @@ barplot(GTdf$country)
 
 # Ideas
 
-5-7 most dangerous and 5-7 least dangerous countries (total terrorism, try to include USA) - freq chart by country
-    * plot how weapon types have changed since 2000, by country
-    * Relationship between weapon choice and type of attack
-    * Crit1,2,3 - compared to weapon type
+5-7 most dangerous and 5-7 least dangerous countries (total terrorism, try to include USA) - freq chart by country   
+    * plot how weapon types have changed since 2000, by country   
+    * Relationship between weapon choice and type of attack   
+    * Crit1,2,3 - compared to weapon type   
 
-Terrorism by Continent?
-    * Heat map of total terrorism
-    * Color coded by most popular weapon or crit1,2,3
+Terrorism by Continent?   
+    * Heat map of total terrorism   
+    * Color coded by most popular weapon or crit1,2,3   
 
 
 
