@@ -12,6 +12,13 @@ csl: nature.csl
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+setwd("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/GTDBproject")
+GTdf <- read.csv("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/globalterrorismdb_0617dist_2000.csv")
+library(ggplot2)
+library(plyr)
+library(knitr)
+
 ```
 ### Abstract
 
@@ -34,7 +41,16 @@ theoretical justification here. For example, why you think the method is applica
 
 ## IV. Results
 
-In result section you can start with an overview of what you have found during the exploration of data
+```{r echo=FALSE, message=FALSE}
+freq_df <- count(GTdf, 'country_txt')
+
+most_freq <- subset(freq_df, freq > 3000)
+kable(most_freq[order(-most_freq$freq),], row.names = FALSE, col.names = c("Country", "# of Terror Attacks"))
+
+```
+
+
+In results section you can start with an overview of what you have found during the exploration of data.
 
 ## V. Conclusion
 

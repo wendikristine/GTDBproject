@@ -13,43 +13,51 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 Setting working directory and loading data into a dataframe.
-```{r}
+```{r echo=FALSE, message=FALSE}
 setwd("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/GTDBproject")
 
-GTdf <- read.csv("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/globalterrorismdb_0617dist.csv")
+GTdf <- read.csv("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/globalterrorismdb_0617dist_2000.csv")
 
-US_GTdf <- read.csv("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/GTDB_US_cont.csv")
+#US_GTdf <- read.csv("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/GTDB_US_cont.csv")
 ```
 
-Attempting EDA... where to begin... standard `summary()` and `plot()` will not work with 135 variables.
 
-Let's start with some regional spatial data.
-```{r fig1, out.width = '100%'}
+```{r fig1, out.width = '100%', echo=FALSE, message=FALSE}
 library(maps)
 library(ggplot2)
 
 # subset the data to include only those which took place in the US
-# US_GTdf <- subset(GTdf,country_txt=="United States")
+US_GTdf <- subset(GTdf,country_txt=="United States")
 
 
 # Remove those not in the continental US
 US_GTdf <- subset(US_GTdf, provstate != "Alaska")
 US_GTdf <- subset(US_GTdf, provstate != "Hawaii")
+US_GTdf <- subset(US_GTdf, provstate != "Puerto Rico")
 
 
 us.dat <- map_data("state")
 ct.dat <- map_data("county")
 ggplot(legend.position = "bottom") + geom_polygon(aes(long,lat, group=group), fill="grey65", data=ct.dat) + geom_polygon(aes(long,lat, group=group), color='white', fill=NA, data=us.dat) + theme_bw() + theme(axis.text = element_blank(), axis.title=element_blank(), legend.position = "bottom") + 
-geom_point(size=2, alpha = 1/2, aes(longitude,latitude, color=weaptype1_txt), data=US_GTdf, legend.position = "bottom") 
+geom_point(size=2, alpha = 1/2, aes(longitude,latitude, color=weaptype1_txt), data=US_GTdf, legend.position = "bottom")
   
 ```
 
+
+
 ```{r}
+Iraq_GTdf <- subset(GTdf,country_txt=="Iraq")
+Iraq_weap_freq <- count(Iraq_GTdf,'weaptype1_txt')
+Paki_GTdf <- subset(GTdf,country_txt=="Pakistan")
+Afghan_GTdf <- subset(GTdf,country_txt=="Afghanistan")
+India_GTdf <- subset(GTdf,country_txt=="India")
+Philipp_GTdf <- subset(GTdf,country_txt=="Philippines")
+Thai_GTdf <- subset(GTdf,country_txt=="Thailand")
+Nigeria_GTdf <- subset(GTdf,country_txt=="Nigeria")
 
-table(GTdf$country)
-#barplot(table_GTdf)
-
-
+weap_freq <- count(GTdf, 'weaptype1_txt')
+p <- ggplot(data = Iraq_GTdf, aes(x = iyear, y = weaptype1) 
+p
 ```
 
 
