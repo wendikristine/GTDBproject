@@ -1,5 +1,5 @@
 ---
-title: "The Effect of Weapons on Global Terrorism in the 21st Century"
+title: "Weapon Trends in 21st Century Global Terrorism"
 author: "Group 7 (Wendi Sapp, Elham Rastegari, Adel KabiriKopaei, Sepehr Pashoutani)"
 date: "September 30, 2017"
 output:
