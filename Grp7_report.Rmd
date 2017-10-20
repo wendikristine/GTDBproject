@@ -11,13 +11,17 @@ csl: nature.csl
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 
-setwd("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/GTDBproject")
-GTdf <- read.csv("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/globalterrorismdb_0617dist_2000.csv")
 library(ggplot2)
 library(plyr)
 library(knitr)
+library(bit64)
+library(data.table)
+
+setwd("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/GTDBproject")
+GTdf <- read.csv("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/globalterrorismdb_0617dist_2000.csv")
+GTdt <- fread("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/globalterrorismdb_0617dist_2000.csv")
 
 ```
 ### Abstract
@@ -42,10 +46,25 @@ theoretical justification here. For example, why you think the method is applica
 ## IV. Results
 
 ```{r echo=FALSE, message=FALSE}
-freq_df <- count(GTdf, 'country_txt')
+
+#filtering out those rows that there is doubt in being a terrorism attack
+GTdt_NoDoubt <- GTdt[GTdt$doubtterr ==0]
+# filtering out those rows that are associated with years 1970-1999
+GTdt_NoDoubt_2000 <- GTdt_NoDoubt[GTdt_NoDoubt$iyear>1999]
+# add one column with all values 1
+GTdt_NoDoubt_2000$NumberofAttacks <- rep(1, nrow(GTdt_NoDoubt_2000))
+# grouping by year and weapon type
+WeaponUseByYear <- GTdt_NoDoubt_2000[ , sum(NumberofAttacks), by = list(iyear,weaptype1)]
+
+WeaponType <- factor(WeaponUseByYear$weaptype1)
+ggplot(WeaponUseByYear, aes(x= WeaponUseByYear$iyear, y= WeaponUseByYear$V1, color = WeaponType)) + geom_line() + xlab('Year') +ylab('Occurrence')
+
+freq_df <- count(GTdt_NoDoubt_2000, 'country_txt')
 
 most_freq <- subset(freq_df, freq > 3000)
 kable(most_freq[order(-most_freq$freq),], row.names = FALSE, col.names = c("Country", "# of Terror Attacks"))
+
+
 
 ```
 
