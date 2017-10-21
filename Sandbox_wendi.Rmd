@@ -46,18 +46,18 @@ geom_point(size=2, alpha = 1/2, aes(longitude,latitude, color=weaptype1_txt), da
 
 
 ```{r}
-Iraq_GTdf <- subset(GTdf,country_txt=="Iraq")
-Iraq_weap_freq <- count(Iraq_GTdf,'weaptype1_txt')
-Paki_GTdf <- subset(GTdf,country_txt=="Pakistan")
-Afghan_GTdf <- subset(GTdf,country_txt=="Afghanistan")
-India_GTdf <- subset(GTdf,country_txt=="India")
-Philipp_GTdf <- subset(GTdf,country_txt=="Philippines")
-Thai_GTdf <- subset(GTdf,country_txt=="Thailand")
-Nigeria_GTdf <- subset(GTdf,country_txt=="Nigeria")
+#Iraq_GTdf <- subset(GTdf,country_txt=="Iraq")
+#Iraq_weap_freq <- count(Iraq_GTdf,'weaptype1_txt')
+#Paki_GTdf <- subset(GTdf,country_txt=="Pakistan")
+#Afghan_GTdf <- subset(GTdf,country_txt=="Afghanistan")
+#India_GTdf <- subset(GTdf,country_txt=="India")
+#Philipp_GTdf <- subset(GTdf,country_txt=="Philippines")
+#Thai_GTdf <- subset(GTdf,country_txt=="Thailand")
+#Nigeria_GTdf <- subset(GTdf,country_txt=="Nigeria")
 
-weap_freq <- count(GTdf, 'weaptype1_txt')
-p <- ggplot(data = Iraq_GTdf, aes(x = iyear, y = weaptype1) 
-p
+#weap_freq <- count(GTdf, 'weaptype1_txt')
+#p <- ggplot(data = Iraq_GTdf, aes(x = iyear, y = weaptype1) 
+#p
 ```
 
 

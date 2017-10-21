@@ -1,0 +1,122 @@
+---
+title: "Weapon Trends in 21st Century Global Terrorism"
+subtitle: "Group 7"
+author: "Wendi Sapp, Elham Rastegari, Adel KabiriKopaei, Sepehr Pashoutani"
+date: "October 21, 2017"
+output:
+  pdf_document: default
+  html_document: default
+csl: nature.csl
+bibliography: GTDBProject.bib
+toc: yes
+code_folding: "hide"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(ggplot2)
+library(scales)
+library(rworldmap)
+library(RColorBrewer)
+library(plyr)
+library(dplyr)
+library(knitr)
+library(bit64)
+library(data.table)
+
+setwd("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/GTDBproject")
+GTdf <- read.csv("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/globalterrorismdb_0617dist_2000.csv")
+GTdt <- fread("C:/Users/wendi/Google Drive/Courses/DataScience_Fall2017/GTDBproject/globalterrorismdb_0617dist_2000.csv")
+
+```
+### Abstract
+
+Continuous media coverage of terroristic attacks makes one consider his or her own personal safety and the safety of neighbors, friends, and family. As we continue to transition to a global society, governments work around the clock to protect the welfare of its citizens. Maintained by researchers at the National Consortium for the Study of Terrorism and Responses to Terrorism (SMART), the Global Terrorism Database contains details on more than 170,000 terrorist attacks since 1970. We investigate temporal trends in choice of weapon and regional concentration in terroristic violence. Selecting those contries which seem to have the highest rate of either receiving terror attacks or producing those who carry out attacks, we combine the terrorism data with world population and geographical data to obtain a standardized view of violence per capita and per country area $(km^2)$. However, historical data of populations and geographic boundaries are difficult to obtain, therefore, only recent trends will be examined for the aforementioned. We also study which countries suffer from terror attacks carried out by their fellow countrymen. We are also interested in investigating the correlation between several other factors and the number of terror attacks carried out by the people from different nationalities. These factors include literacy rate/education level, unemployment rate, and the percentage of people who believe that religion plays an important role in their daily life. An analysis such as this will allow peace-keepers to better distribute their efforts in reducing terrorist attacks and improve the safety of those in terror-ridden regions.
+
+## I. Introduction
+
+The complexity of global terroristic threats makes the subject an intriguing problem to study. There are many, well-documented correlations between terrorism and education [-@lafree_introducing_2007], poverty levels, regional economics,
+
+
+## II. About the Data
+
+This data set contains more than 170,000 entries with up to 135 variables describing each entry. Lastly, the database does not contain any data from 1993.
+
+
+## III. Methodology
+
+The authors chose to elucidate recent trends and thus have limited the data to those entries which occurred during or after the year 2000. Futhermore, there is a variable which expresses whether or not the mdatabase maintainers have any doubt that the entry was, indeed, a terrorism attack. Those entries which fall into the category were removed.
+
+*This section will include the methods you used for your analysis. You should include some
+theoretical justification here. For example, why you think the method is applicable, what are the assumptions about the methods, whether your data satisfies those assumption or not etc.*
+
+## IV. Results
+
+```{r echo=FALSE, message=FALSE}
+#filtering out those rows that there is doubt in being a terrorism attack
+GTdt_NoDoubt <- GTdt[GTdt$doubtterr ==0]
+# filtering out those rows that are associated with years 1970-1999
+GTdt_NoDoubt_2000 <- GTdt_NoDoubt[GTdt_NoDoubt$iyear>1999]
+# add one column with all values 1
+GTdt_NoDoubt_2000$NumberofAttacks <- rep(1, nrow(GTdt_NoDoubt_2000))
+# grouping by year and weapon type
+WeaponUseByYear <- GTdt_NoDoubt_2000[ , sum(NumberofAttacks), by = list(iyear,weaptype1_txt)]
+
+GTdf_NoDoubt_2000 <- subset(GTdf, GTdf$doubtterr==0)
+```
+
+With every country in the world included in this data set, it is not feasible to consider an evaluation of all of them. With this in mind, only the top "most dangerous" countries are considered in this analysis. The "most dangerous" countries are selected by the countries which possess the highest frequency of terror attacks since the year 2000. **Figure 1** displays a world heat map of the most dangerous countries.
+
+```{r fig1, out.width = '100%', echo=FALSE, message=FALSE, fig.cap="Countries that are shown to be red and orange have an increased frequency of terroristic attacks. Note the logarithmic scale."}
+
+countryHeat <- as.data.frame(table(GTdf_NoDoubt_2000$country_txt))
+colnames(countryHeat) <- c("Country", "value")
+matched <- joinCountryData2Map(countryHeat, joinCode="NAME", nameJoinColumn="Country")
+mapCountryData(matched, nameColumnToPlot="value", mapTitle="", catMethod = "logFixedWidth", colourPalette = brewer.pal(7, "YlOrRd"))
+```
+
+According to **Table 1**, most of these countries are located in the Middle East. These countries have been suffering from political instability during these years, which increase the likelihood of the development of terrorist groups. In Iraq, after the power was removed from its dictator in 2003, the country entered an unsteady situation and is a desirable region for the most dangerous terrorist groups who wish to take advantage of the turmoil. In Pakistan, the variety cultural and religious groups may lead the country to an unbalanced situation. In Afghanistan, a series of coups in late 1970s turn over the country stability. It seems even after the replacement of the political structure with democratically-elected government, the situation has not been changed. [many citations needed in the above paragraph]
+
+```{r tab1, echo=FALSE, message=FALSE}
+
+#Generating a table of highest # of terror attacks per country
+freq_df <- count(GTdf_NoDoubt_2000, country_txt)
+most_freq <- subset(freq_df, n>3000)
+kable(most_freq[order(-most_freq$n),], row.names = FALSE, col.names = c("Country", "# of Terror Attacks"), caption = "These countries have the highest number of terror attacks since the year 2000.")
+```  
+
+Of particular interest is the weapon trends of global terrorism. An analysis of weapon use was performed and is displayed in **Figure 2**. Explosives are the most common choice of terrorists when committing attacks, followed by firearms. 
+
+
+```{r fig2, out.width = '100%', echo=FALSE, message=FALSE, fig.cap="A time series analysis of weapon choice by terrorists."}
+WeaponType <- factor(WeaponUseByYear$weaptype1_txt)
+ggplot(WeaponUseByYear, aes(x= WeaponUseByYear$iyear, y= WeaponUseByYear$V1, 
+        color = WeaponType)) + geom_line() + xlab('Year') + ylab('Occurrence') + 
+        theme(legend.justification=c(0,1), legend.position=c(0.001,1), legend.title=element_blank()) + 
+        theme(legend.text = element_text(size = 6)) +
+        theme(legend.background = element_rect(colour = "transparent", fill = "transparent"))
+```
+
+
+## V. Conclusion
+
+*The conclusion is an elaboration of your abstract. Here you will discuss what you have done and how. The gist of the results need to be mentioned here. Please keep it in mind that there may be readers who only read your conclusion. So, make your conclusion complete so that no reader misses anything even if they don't want to read the whole document.*
+
+*Each paragraph of the conclusion may discuss one result you have found or one concept you are proposing. Discuss your findings and why it is better and how it is compared to any existing methods may exist.*
+
+*There should be one paragraph about the future direction of the work you have done.  You would like to make it so fascinating that the reader would wish to be involved in this work in future.*
+
+### References
+
+
+
+
+
+
+
+
+
+
+
+
